@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: 2010-09-09
+Metadata:
+  'AWS::CloudFormation::Designer':
+    4b08366e-350c-4686-8a25-2a0002acc027:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 30
+        'y': 30
+      z: 0
+      embeds: []
+Resources:
+   s3bucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties: 
+     BucketName: task-on-cloudformation
+     VersioningConfiguration: 
+       Status: Enabled
+     BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: 'aws:kms'
+     LifecycleConfiguration:
+     
+        Rules:
+          - Id: GlacierRule
+            Prefix: glacier
+            Status: Enabled
+            ExpirationInDays: 365
+            Transitions:
+              - TransitionInDays: 1
+                StorageClass: GLACIER            
+     WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html    
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 4b08366e-350c-4686-8a25-2a0002acc027
